@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Теорема Кантора про перетин множин</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+
+  <div class="app-window">
+    <header class="header-box">
+      Теорема Кантора про перетин
+    </header>
+    
+    <section class="statement-box">
+      <div class="statement-text" id="statement-text"></div>
+      <button class="mode-toggle" id="mode-toggle-btn" onclick="toggleMode()">
+        Перейти: Евклідів простір ℝⁿ
+      </button>
+    </section>    
+
+    <main class="content-area">
+      <!-- граф полотно -->
+      <div class="canvas-container">
+        <svg id="geo-svg" viewBox="0 0 500 360">
+          <defs>
+            <radialGradient id="grad-center" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ef4444" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <g id="sets-group"></g>
+          <g id="subsequence-lines"></g>
+          <g id="points-group"></g>
+          <g id="diameter-measure"></g>
+        </svg>
+
+        <!-- поточний діаметр -->
+        <div class="canvas-metric-badge" id="diam-badge">
+          diam(Fₙ) ≈ 2.80
+        </div>
+      </div>
+      
+      <!-- крок -->
+      <div class="step-explanation" id="step-explanation">
+        <div class="step-badge" id="step-badge">Крок 1</div>
+        <h2 class="step-title" id="step-title"></h2>
+        <p class="step-desc" id="step-desc"></p>
+        <div class="math-callout" id="step-math"></div>
+      </div>
+    </main>
+
+    <!--нижня панель керування -->
+    <footer class="footer-bar">
+      <div class="footer-left">
+        <button class="help-btn" onclick="openHelp()" title="Довідка">?</button>
+        <div class="progress-indicators" id="indicators" aria-label="Кроки доведення"></div>
+      </div>
+
+      <!--керування n та кроками -->
+      <div class="footer-controls">
+        <button class="nav-btn" id="prev-btn" onclick="prevStep()" aria-label="Попередній крок">←</button>
+
+        <div class="slider-control">
+          <label for="step-slider">Крок:</label>
+          <input type="range" id="step-slider" min="1" max="5" value="1" oninput="onSliderInput(this.value)">
+          <span class="slider-val" id="slider-val">1</span>
+        </div>
+
+        <button class="nav-btn" id="next-btn" onclick="nextStep()" aria-label="Наступний крок">→</button>
+      </div>
+    </footer>
+    
+    <!--модальне вікно з довідкою -->
+    <div class="modal-overlay" id="help-modal" onclick="onModalOverlayClick(event)">
+      <div class="modal-card">
+        <h3>Порівняння двох різних теорем</h3>
+        <p><b>1. Теорема Кантора для повних метричних просторів:</b> Метричний простір $(X, d)$ є повним тоді й лише тоді, коли для будь-якої спадної послідовності непорожніх замкнених множин $F_1 \supseteq F_2 \supseteq \dots$ з $\operatorname{diam}(F_n) \to 0$ перетин складається рівно з однієї точки.</p>
+        <p><b>2. Теорема про непорожність перетину в $\mathbb{R}^n$:</b> Якщо $F_1 \supseteq F_2 \supseteq \dots$ — спадна послідовність непорожніх замкнених і обмежених (компактних) підмножин $\mathbb{R}^n$, то $\bigcap_{n=1}^\infty F_n \ne \emptyset$. Умова $\operatorname{diam}(F_n) \to 0$ не вимагається, тому перетин може містити більше однієї точки.</p>
+        <button class="close-modal-btn" onclick="closeHelp()">Закрити</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
